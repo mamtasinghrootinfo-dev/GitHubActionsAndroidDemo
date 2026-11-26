@@ -1,5 +1,4 @@
-
-name: Android CI Pipeline
+name: Android Advanced CI
 
 on:
   push:
@@ -17,38 +16,98 @@ permissions:
 
 jobs:
   android-build:
-    name: Build Android App
+    name: Android Build
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Download source code
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      # Step 2: Configure Java
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
 
-      # Step 3: Configure Gradle
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      # Step 4: Run unit tests
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest
-
-      # Step 5: Build debug APK
+      # Debug build
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      # Step 6: Upload APK
-      - name: Upload APK
+      # Release build
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      # Upload Debug APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-debug-apk
+          name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
-          retention-days: 7
+
+      # Upload Release APK
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: app/build/outputs/apk/release/*.apk
+
+
+
+
+#
+#name: Android CI Pipeline
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#
+#  pull_request:
+#    branches:
+#      - main
+#
+#  workflow_dispatch:
+#
+#permissions:
+#  contents: read
+#
+#jobs:
+#  android-build:
+#    name: Build Android App
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      # Step 1: Download source code
+#      - name: Checkout Repository
+#        uses: actions/checkout@v6
+#
+#      # Step 2: Configure Java
+#      - name: Setup JDK
+#        uses: actions/setup-java@v5
+#        with:
+#          distribution: temurin
+#          java-version: '17'
+#
+#      # Step 3: Configure Gradle
+#      - name: Setup Gradle
+#        uses: gradle/actions/setup-gradle@v6
+#
+#      # Step 4: Run unit tests
+#      - name: Run Unit Tests
+#        run: ./gradlew testDebugUnitTest
+#
+#      # Step 5: Build debug APK
+#      - name: Build Debug APK
+#        run: ./gradlew assembleDebug
+#
+#      # Step 6: Upload APK
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: android-debug-apk
+#          path: app/build/outputs/apk/debug/*.apk
+#          if-no-files-found: error
+#          retention-days: 7
