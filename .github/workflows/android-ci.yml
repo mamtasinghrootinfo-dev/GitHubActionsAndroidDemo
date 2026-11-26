@@ -44,6 +44,9 @@ jobs:
           path: app/build/reports/lint-results-*.html
           if-no-files-found: ignore
 
+      - name: Generate Code Coverage
+        run: ./gradlew jacocoTestReport
+
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("jacoco")
 }
 
 android {
@@ -34,6 +35,40 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*"
+    )
+
+    val debugTree = fileTree(
+        "${layout.buildDirectory.get()}/tmp/kotlin-classes/debug"
+    ) {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(files(debugTree))
+
+    sourceDirectories.setFrom(
+        files("src/main/java", "src/main/kotlin")
+    )
+
+    executionData.setFrom(
+        fileTree(layout.buildDirectory.get().asFile) {
+            include("jacoco/testDebugUnitTest.exec")
+        }
+    )
 }
 
 dependencies {
