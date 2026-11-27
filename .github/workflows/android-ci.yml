@@ -33,7 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Run Unit Tests
-        run: ./gradew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest
 
       # Debug build
 
