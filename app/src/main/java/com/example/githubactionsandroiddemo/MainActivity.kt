@@ -28,6 +28,11 @@ class MainActivity : ComponentActivity() {
                     Text(
                         text = "Calculation Result: $result"
                     )
+                    LoginScreen(
+                        onLoginClick = { _, _ -> },
+                        onForgotPasswordClick = {},
+                        onSignUpClick = {}
+                    )
                 }
             }
           /*  GitHubActionsAndroidDemoTheme {
