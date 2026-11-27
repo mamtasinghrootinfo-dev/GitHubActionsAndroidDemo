@@ -78,8 +78,8 @@ jobs:
           path: app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
 
-      - name: Check Firebase CLI
-        run: firebase --version
+#      - name: Check Firebase CLI
+#        run: firebase --version
 
       - name: Configure Firebase credentials
         env:
